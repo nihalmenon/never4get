@@ -4,6 +4,7 @@ var itemContents = [];
 function addItem(text, checked) {
 	var input = document.querySelector("input");	
 	var inputText = text || input.value;
+	if (inputText.includes(",") || inputText.includes("|")) return false;
 	itemContents.push(inputText);
 	
 	if (!inputText && !text) return;
@@ -67,6 +68,8 @@ function addItem(text, checked) {
 }
 
 function keyPress(e) {
+	var key = e.keyCode || e.which;
+	if (key == 44 || key == 92) return false; // comma and pipe
 	if (e.which == 13) addItem();
 }
 
