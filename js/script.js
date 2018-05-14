@@ -52,7 +52,7 @@ function addItem(text, checked) {
 		localStorage.never4get = items.join("|");
 	});
 
-	span.addEventListener('keyup', function(e) {
+	span.addEventListener('input', function(e) {
 		var oldText = itemContents[itemIndex];
 		var checked = document.querySelector("#item" + itemIndex).querySelector("div").textContent == "☐" ? 0 : 1;
 		var text = document.querySelector("#item" + itemIndex + " span").textContent;
