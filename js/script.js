@@ -1,10 +1,16 @@
+var itemNumber = 0;
+var itemContents = [];
+
 function addItem(text, checked) {
 	var input = document.querySelector("input");	
 	var inputText = text || input.value;
+	itemContents.push(inputText, checked || 0);
 	
 	if (!inputText && !text) return;
 	
+	var itemIndex = ++itemNumber;
 	var listItem = document.createElement("li");
+	listItem.id = "item" + itemIndex;
 
 	var span = document.createElement("span");
 	span.textContent = inputText;
@@ -16,6 +22,8 @@ function addItem(text, checked) {
 	var checkbox = document.createElement("div");
 	var checked = checked || 0;
 	checkbox.textContent = checked == 1 ? "✔" : "☐";
+	span.style.textDecoration = checked == 0 ? "" : "line-through";
+	span.style.color = checked == 0 ? "" : "rgb(0, 128, 0)";
 
 	var list = document.querySelector("ul");
 	list.appendChild(listItem);
@@ -23,16 +31,36 @@ function addItem(text, checked) {
 	listItem.appendChild(span);
 	listItem.appendChild(deleteButton);
 
-	deleteButton.addEventListener('click', function() {
+	deleteButton.addEventListener('click', function(e) {
+		var checked = document.querySelector("#item" + itemIndex).querySelector("div").textContent == "☐" ? 0 : 1;
+		var text = document.querySelector("#item" + itemIndex + " span").textContent;
+		localStorage.never4get = localStorage.never4get.replace(text + "," + checked + "|", "");
+
 		listItem.remove();
 		input.focus();
 	});
 
-	checkbox.addEventListener('click', function() {
-		checkbox.textContent = checkbox.textContent == "☐" ? "✔" : "☐";
+	checkbox.addEventListener('click', function(e) {
+		e.target.textContent = e.target.textContent == "☐" ? "✔" : "☐";
 		span.style.textDecoration = span.style.textDecoration == "line-through" ? "" : "line-through";
 		span.style.color = span.style.color == "rgb(0, 128, 0)" ? "" : "rgb(0, 128, 0)";
+
+		var checked = checkbox.textContent == "☐" ? 0 : 1;
+		var text = e.target.parentElement.querySelector("span").textContent;
+		var items = localStorage.never4get.split("|");
+		items[items.indexOf(text + "," + (checked == 1 ? 0 : 1))] = text + "," + checked;
+		localStorage.never4get = items.join("|");
 	});
+
+	span.addEventListener('keyup', function(e) {
+		var oldText = itemContents[itemIndex];
+		var checked = document.querySelector("#item" + itemIndex).querySelector("div").textContent == "☐" ? 0 : 1;
+		var text = document.querySelector("#item" + itemIndex + " span").textContent;
+		itemContents[itemIndex] = text;
+		localStorage.never4get = localStorage.never4get.replace(oldText + "," + checked, text + "," + checked);
+	});
+
+	if (!text) localStorage.never4get += input.value + "," + checked + "|";
 
 	input.value = "";
 	input.focus();
@@ -46,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	document.querySelector("body>div").addEventListener('click', function(){addItem()});
 	document.querySelector("input").addEventListener('keypress', keyPress);
 
-	localStorage.never4get = localStorage.never4get ||  "Start using never4get,0";
+	localStorage.never4get = localStorage.never4get ||  "Keep using never4get,0|";
 	var items = localStorage.never4get.split("|");
 	for (i = 0; i < items.length; i++) {
 		var text = items[i].split(",")[0];
