@@ -88,7 +88,7 @@ li span {
   word-break: break-word;
 }
 
-li div:nth-child(2) {
+li div:nth-child(3) {
   opacity: 0;
   position: absolute;
   right: 0;
@@ -104,11 +104,11 @@ li div:nth-child(2) {
   transition: .1s;
 }
 
-li:hover div:nth-child(2) {
+li:hover div:nth-child(3) {
  opacity: 1;
 }
 
-li div:nth-child(2) svg {
+li div:nth-child(3) svg {
   width: 100%;
   height: 100%;
   cursor: pointer;
