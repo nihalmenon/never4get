@@ -1,6 +1,11 @@
 var itemNumber = 0;
 var itemContents = [];
 
+function swapSibling(node1, node2) {
+	node1.parentNode.replaceChild(node1, node2);
+	node1.parentNode.insertBefore(node2, node1); 
+}
+
 function addItem(text, checked) {
 	var input = document.querySelector("input");	
 	var inputText = text || input.value;
@@ -16,7 +21,20 @@ function addItem(text, checked) {
 	var span = document.createElement("span");
 	span.textContent = inputText;
 	span.setAttribute("contenteditable", "true");
+	
+	var upArrow = document.createElement("i");
+	upArrow.className = "up";
+	upArrow.setAttribute("contenteditable", "false");
 
+	var downArrow = document.createElement("i");
+	downArrow.className = "down";
+	downArrow.setAttribute("contenteditable", "false");
+
+	var arrows = document.createElement("div");
+	arrows.appendChild(upArrow);
+	arrows.appendChild(downArrow);
+	arrows.setAttribute("class", "arrows");
+	
 	var deleteButton = document.createElement("div");
 	deleteButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 26" width="50" height="50"><style>svg:hover path { fill: #f00 }</style><path d="M11.5-.031c-1.957 0-3.531 1.625-3.531 3.594V4H4c-.55 0-1 .45-1 1v1H2v2h2v15c0 1.645 1.355 3 3 3h12c1.645 0 3-1.355 3-3V8h2V6h-1V5c0-.55-.45-1-1-1h-3.969v-.438c0-1.968-1.574-3.593-3.531-3.593zm0 2.062h3c.805 0 1.469.656 1.469 1.531V4H10.03v-.438c0-.874.664-1.53 1.469-1.53zM6 8h5.125c.125.012.246.031.375.031h3c.129 0 .25-.02.375-.031H20v15c0 .563-.438 1-1 1H7c-.563 0-1-.438-1-1zm2 2v12h2V10zm4 0v12h2V10zm4 0v12h2V10z" fill="#222"/></svg>';
 
@@ -31,6 +49,14 @@ function addItem(text, checked) {
 	listItem.appendChild(checkbox);
 	listItem.appendChild(span);
 	listItem.appendChild(deleteButton);
+	
+	upArrow.addEventListener('click', function() {
+		if(listItem.previousSibling) list.insertBefore(listItem, listItem.previousSibling);
+	})
+
+	downArrow.addEventListener('click', function(){
+		if(listItem.nextSibling) swapSibling(listItem, listItem.nextSibling);
+	})
 
 	deleteButton.addEventListener('click', function(e) {
 		var checked = document.querySelector("#item" + itemIndex).querySelector("div").textContent == "☐" ? 0 : 1;
