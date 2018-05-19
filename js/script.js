@@ -94,8 +94,6 @@ function addItem(text, checked) {
 }
 
 function keyPress(e) {
-	var key = e.keyCode || e.which;
-	if (key == 44 || key == 92) return false; // comma and pipe
 	if (e.which == 13) addItem();
 }
 
