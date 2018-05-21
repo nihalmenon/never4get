@@ -9,7 +9,7 @@ function swapSibling(node1, node2) {
 function addItem(text, checked) {
 	var input = document.querySelector("input");	
 	var inputText = text || input.value;
-	itemContents.push(inputText, checked || 0);
+	itemContents.push(inputText);
 	
 	if (!inputText && !text) return;
 	
@@ -80,10 +80,10 @@ function addItem(text, checked) {
 	});
 
 	span.addEventListener('input', function(e) {
-		var oldText = itemContents[itemIndex];
+		var oldText = itemContents[itemIndex - 1];
 		var checked = document.querySelector("#item" + itemIndex).querySelector("div").textContent == "☐" ? 0 : 1;
 		var text = document.querySelector("#item" + itemIndex + " span").textContent;
-		itemContents[itemIndex] = text;
+		itemContents[itemIndex - 1] = text;
 		localStorage.never4get = localStorage.never4get.replace(oldText + "," + checked, text + "," + checked);
 	});
 
@@ -109,4 +109,3 @@ document.addEventListener("DOMContentLoaded", function() {
 	}
 
 });
-
