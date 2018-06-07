@@ -52,10 +52,22 @@ function addItem(text, checked) {
 
 	upArrow.addEventListener('click', function() {
 		if(listItem.previousSibling) list.insertBefore(listItem, listItem.previousSibling);
+		var text = this.parentElement.parentElement.querySelector("span").textContent + "," + (this.parentElement.parentElement.querySelector("div").textContent == "✔" ? "1" : "0");
+		var items = localStorage.never4get.split("|");
+		var index = items.indexOf(text);
+		items.splice(index - 1, 0, text);
+		items.splice(index + 1, 1);
+		localStorage.never4get = items.join("|");
 	})
 
 	downArrow.addEventListener('click', function(){
 		if(listItem.nextSibling) swapSibling(listItem, listItem.nextSibling);
+		var text = this.parentElement.parentElement.querySelector("span").textContent + "," + (this.parentElement.parentElement.querySelector("div").textContent == "✔" ? "1" : "0");
+		var items = localStorage.never4get.split("|");
+		var index = items.indexOf(text);
+		items.splice(index, 1);
+		items.splice(index + 1, 0, text);
+		localStorage.never4get = items.join("|");
 	})
 
 	deleteButton.addEventListener('click', function(e) {
@@ -80,10 +92,10 @@ function addItem(text, checked) {
 	});
 
 	span.addEventListener('input', function(e) {
-		var oldText = itemContents[itemIndex];
+		var oldText = itemContents[itemIndex - 1];
 		var checked = document.querySelector("#item" + itemIndex).querySelector("div").textContent == "☐" ? 0 : 1;
 		var text = document.querySelector("#item" + itemIndex + " span").textContent;
-		itemContents[itemIndex] = text;
+		itemContents[itemIndex - 1] = text;
 		localStorage.never4get = localStorage.never4get.replace(oldText + "," + checked, text + "," + checked);
 	});
 
@@ -109,3 +121,4 @@ document.addEventListener("DOMContentLoaded", function() {
 	}
 
 });
+
