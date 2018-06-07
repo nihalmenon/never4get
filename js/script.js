@@ -80,10 +80,10 @@ function addItem(text, checked) {
 	});
 
 	span.addEventListener('input', function(e) {
-		var oldText = itemContents[itemIndex - 1];
+		var oldText = itemContents[itemIndex];
 		var checked = document.querySelector("#item" + itemIndex).querySelector("div").textContent == "☐" ? 0 : 1;
 		var text = document.querySelector("#item" + itemIndex + " span").textContent;
-		itemContents[itemIndex - 1] = text;
+		itemContents[itemIndex] = text;
 		localStorage.never4get = localStorage.never4get.replace(oldText + "," + checked, text + "," + checked);
 	});
 
